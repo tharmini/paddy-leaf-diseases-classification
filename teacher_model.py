@@ -320,7 +320,7 @@ def build_fpn_hydranet_model(
 model = build_fpn_hydranet_model()
 
 model.compile(
-    optimizer=tf.keras.optimizers.Adam(learning_rate=0.0005),
+    optimizer=tf.keras.optimizers.Adam(learning_rate=0.0001),
     loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=False),
     metrics=['accuracy']
 )
