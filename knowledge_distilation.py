@@ -9,7 +9,7 @@ import numpy as np
 # ----------------------------
 # Distillation Hyperparameters
 # ----------------------------
-TEMPERATURE = 3
+TEMPERATURE = 4
 ALPHA = 0.5
 
 # ============================================================
@@ -254,23 +254,16 @@ class StudentModelCheckpoint(callbacks.Callback):
 # ============================================================
 student_checkpoint = StudentModelCheckpoint(
     student_model=student_model,
-    filepath='/content/drive/MyDrive/student_model_epoch{epoch:02d}_val_acc{val_accuracy:.4f}.weights.h5',
+    filepath='',
     monitor='val_accuracy',
     mode='max'
 )
 
 early_stopping = callbacks.EarlyStopping(
     monitor='val_accuracy',
-    patience=12,
+    patience=10,
     restore_best_weights=True,
     mode='max'
-)
-
-reduce_lr = callbacks.ReduceLROnPlateau(
-    monitor='val_total_loss',
-    factor=0.2,
-    patience=5,
-    min_lr=1e-7
 )
 
 # ============================================================
@@ -279,7 +272,7 @@ reduce_lr = callbacks.ReduceLROnPlateau(
 print("Starting knowledge distillation training...")
 history = distillation_model.fit(
     train_dataset,
-    epochs=50,
+    epochs=100,
     validation_data=validation_dataset,
-    callbacks=[student_checkpoint, early_stopping, reduce_lr]
+    callbacks=[student_checkpoint, early_stopping]
 )
